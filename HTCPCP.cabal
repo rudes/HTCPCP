@@ -6,15 +6,14 @@ author:              rudes
 maintainer:          jacobriddle94@gmail.com
 category:            Network
 build-type:          Simple
-cabal-version:       >=1.10
+cabal-version:       >=1.24
 
 library
   hs-source-dirs: .
   exposed-modules: Network.HTCPCP.Pot
   build-depends:
     binary,
-    base >=4.7,
-    network-uri
+    base >=4.7
   default-language:    Haskell2010
 
 test-suite spec
@@ -25,7 +24,6 @@ test-suite spec
   build-depends:
       binary,
       base >=4.7,
-      network-uri,
-      hspec ==2.2.2,
+      hspec >=2.2.2,
       htcpcp
   default-language:    Haskell2010
