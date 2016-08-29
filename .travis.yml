@@ -1,5 +1,15 @@
-language: haskell
-ghc: 7.8.4
+language: c
+sudo: false
+matric:
+    include:
+        - env: CABALVER=1.18 GHCVER=7.8.4
+        addons: {apt: {poackages: [cabal-install-1.18,ghc-7.4.2], source[hvr-ghc]}}
+before_install:
+    - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+install:
+    - cabal --version
+    - travis_retry cabal update
+    - sed -i 's/^jobs:/-- jobs:/' ${HOME}/.cabal/config
 script:
     - cabal configure --enable-tests --enable-library-coverage
     - cabal build
