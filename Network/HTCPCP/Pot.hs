@@ -17,7 +17,7 @@ data PotHeaderName = SAFE | ACCEPT PotAddType
 data PotURI = PotURI
     { potUriScheme :: String
     , potUriHost :: String
-    , potDesignator :: String
+    , potDesignator :: Int
     , potAdditions :: PotAddType
     }
 data PotRequest a =
@@ -27,7 +27,7 @@ data PotRequest a =
             , prqBody :: a }
 
 instance Show PotURI where
-    show (PotURI s h d a) = s ++ h ++ d ++ show a
+    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-" ++ show d ++ "#" ++ show a
 instance Show PotRequestMethod where
     show x =
         case x of
