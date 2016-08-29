@@ -1,7 +1,5 @@
 module Network.HTCPCP.Pot where
 
-import Network.URI
-
 data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
 data PotHeader = PotHeader PotHeaderName String
 data PotErrorResponse = NA | TPOT
@@ -23,7 +21,7 @@ data PotURI = PotURI
     , potAdditions :: PotAddType
     }
 data PotRequest a =
-    Request { prqURI :: URI
+    Request { prqURI :: PotURI
             , prqMethod :: PotRequestMethod
             , prqHeaders :: [PotHeader]
             , prqBody :: a }
