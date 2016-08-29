@@ -28,6 +28,8 @@ data PotRequest a =
             , prqHeaders :: [PotHeader]
             , prqBody :: a }
 
+instance Show PotURI where
+    show (PotURI s h d a) = s ++ h ++ d ++ show a
 instance Show PotRequestMethod where
     show x =
         case x of
@@ -61,8 +63,8 @@ instance Show PotMilk where
         case x of
           CREAM -> "CREAM"
           HALFANDHALF -> "HALF-AND-HALF"
-          WHOLEMILK -> "WHOLE MILK"
-          PARTSKIM -> "PART SKIM"
+          WHOLEMILK -> "WHOLE-MILK"
+          PARTSKIM -> "PART-SKIM"
           SKIM -> "SKIM"
           NONDAIRY -> "NON-DAIRY"
 
@@ -77,8 +79,8 @@ instance Show PotSyrup where
 instance Show PotAlcohol where
     show x =
         case x of
-          WHISKY -> "Whisky"
-          RUM -> "Rum"
-          KAHLUA -> "Kahlua"
-          AQUAVIT -> "Aquavit"
+          WHISKY -> "WHISKY"
+          RUM -> "RUM"
+          KAHLUA -> "KAHLUA"
+          AQUAVIT -> "AQUAVIT"
 
