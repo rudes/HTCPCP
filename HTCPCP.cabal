@@ -26,6 +26,6 @@ test-suite spec
       binary,
       base >=4.7,
       network-uri,
-      hspec >=2.2.3,
+      hspec ==2.2.2,
       htcpcp
   default-language:    Haskell2010
