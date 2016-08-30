@@ -1,6 +1,7 @@
 name:                htcpcp
 version:             0.1.0.0
 synopsis:            Implementation of HTCPCP for Haskell
+license:             MIT
 license-file:        LICENSE
 author:              rudes
 maintainer:          jacobriddle94@gmail.com
