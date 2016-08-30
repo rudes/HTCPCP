@@ -8,7 +8,7 @@ data PotRequest = PotRequest
 instance Show PotRequest where
     show (PotRequest u m h b) =
         show m ++ " " ++ show u ++ " " ++ "\r\n"
-        ++ foldr (++) [] (map show h) ++ "\r\n" ++ b
+        ++ concatMap show h ++ "\r\n" ++ b
 
 
 data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
@@ -72,7 +72,7 @@ instance Show PotAlcohol where
 
 data PotHeader = PotHeader PotHeaderName String
 instance Show PotHeader where
-    show (PotHeader a x)  = show a ++ ":" ++ x
+    show (PotHeader a x)  = show a ++ ":" ++ x ++ ";"
 data PotHeaderName = SAFE | ACCEPT
 instance Show PotHeaderName where
     show x =
