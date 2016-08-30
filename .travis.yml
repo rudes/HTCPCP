@@ -17,4 +17,4 @@ script:
     - cabal test
 after_script:
     - cabal install hpc-coveralls
-    - hpc-coveralls spec --repo-token $COVERALLS_TOKEN
+    - /home/travis/.cabal/bin/hpc-coveralls spec --repo-token $COVERALLS_TOKEN
