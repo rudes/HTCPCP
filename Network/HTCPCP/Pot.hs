@@ -26,7 +26,8 @@ data PotURI = PotURI
     , potDesignator :: Int
     , potAdditions :: PotAddType }
 instance Show PotURI where
-    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-" ++ show d ++ "#" ++ show a
+    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
+                            ++ show d ++ "#" ++ show a
 
 data PotAddType = MILK PotMilk
                 | SYRUP PotSyrup
