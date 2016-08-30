@@ -1,33 +1,17 @@
 module Network.HTCPCP.Pot where
 
-data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
-data PotHeader = PotHeader PotHeaderName String
-data PotErrorResponse = NA | TPOT
-data PotSafeHeader = YES | NO | CONDITONAL Bool
-data PotMilk = CREAM | HALFANDHALF | WHOLEMILK | PARTSKIM | SKIM | NONDAIRY
-data PotSyrup = VANILLA | ALMOND | RASPBERRY | CHOCOLATE
-data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT
-data PotAddType = MILK PotMilk
-                | SYRUP PotSyrup
-                | ALCOHOL PotAlcohol
-                | CustomAddition String
-data PotHeaderName = SAFE | ACCEPT PotAddType
--- potUriScheme://potUriHost/potDesignator#potAdditions
--- coffee://host-address/pot-1#CREAM
-data PotURI = PotURI
-    { potUriScheme :: String
-    , potUriHost :: String
-    , potDesignator :: Int
-    , potAdditions :: PotAddType
-    }
-data PotRequest a =
-    Request { prqURI :: PotURI
-            , prqMethod :: PotRequestMethod
-            , prqHeaders :: [PotHeader]
-            , prqBody :: a }
+data PotRequest = PotRequest
+    { prqURI :: PotURI
+    , prqMethod :: PotRequestMethod
+    , prqHeaders :: [PotHeader]
+    , prqBody :: String }
+instance Show PotRequest where
+    show (PotRequest u m h b) =
+        show m ++ " " ++ show u ++ " " ++ "\r\n"
+        ++ foldr (++) [] (map show h) ++ "\r\n" ++ b
 
-instance Show PotURI where
-    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-" ++ show d ++ "#" ++ show a
+
+data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
 instance Show PotRequestMethod where
     show x =
         case x of
@@ -36,17 +20,18 @@ instance Show PotRequestMethod where
             PROPFIND   ->   "PROPFIND"
             WHEN       ->   "WHEN"
 
-instance Show PotErrorResponse where
-    show x =
-        case x of
-          NA -> "406 Not Acceptable"
-          TPOT -> "418 I'm a Teapot"
+data PotURI = PotURI
+    { potUriScheme :: String
+    , potUriHost :: String
+    , potDesignator :: Int
+    , potAdditions :: PotAddType }
+instance Show PotURI where
+    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-" ++ show d ++ "#" ++ show a
 
-instance Show PotHeaderName where
-    show x =
-        case x of
-          SAFE -> "Safe"
-          ACCEPT t -> show t
+data PotAddType = MILK PotMilk
+                | SYRUP PotSyrup
+                | ALCOHOL PotAlcohol
+                | CustomAddition String
 
 instance Show PotAddType where
     show x =
@@ -56,6 +41,7 @@ instance Show PotAddType where
           ALCOHOL a -> show a
           CustomAddition s -> s
 
+data PotMilk = CREAM | HALFANDHALF | WHOLEMILK | PARTSKIM | SKIM | NONDAIRY
 instance Show PotMilk where
     show x =
         case x of
@@ -66,6 +52,7 @@ instance Show PotMilk where
           SKIM -> "SKIM"
           NONDAIRY -> "NON-DAIRY"
 
+data PotSyrup = VANILLA | ALMOND | RASPBERRY | CHOCOLATE
 instance Show PotSyrup where
     show x =
         case x of
@@ -74,6 +61,7 @@ instance Show PotSyrup where
           RASPBERRY -> "RASPBERRY"
           CHOCOLATE -> "CHOCOLATE"
 
+data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT
 instance Show PotAlcohol where
     show x =
         case x of
@@ -81,4 +69,21 @@ instance Show PotAlcohol where
           RUM -> "RUM"
           KAHLUA -> "KAHLUA"
           AQUAVIT -> "AQUAVIT"
+
+data PotHeader = PotHeader PotHeaderName String
+instance Show PotHeader where
+    show (PotHeader a x)  = show a ++ ":" ++ x
+data PotHeaderName = SAFE | ACCEPT
+instance Show PotHeaderName where
+    show x =
+        case x of
+          SAFE -> "Safe"
+          ACCEPT -> "Accept-Additions"
+
+data PotErrorResponse = NA | TPOT
+instance Show PotErrorResponse where
+    show x =
+        case x of
+          NA -> "406 Not Acceptable"
+          TPOT -> "418 I'm a Teapot"
 
