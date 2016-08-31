@@ -10,7 +10,6 @@ instance Show PotRequest where
         show m ++ " " ++ show u ++ " " ++ "\r\n"
         ++ concatMap show h ++ "\r\n" ++ b
 
-
 data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
 instance Show PotRequestMethod where
     show x =
@@ -71,15 +70,26 @@ instance Show PotAlcohol where
           KAHLUA -> "KAHLUA"
           AQUAVIT -> "AQUAVIT"
 
-data PotHeader = PotHeader PotHeaderName String
+class HasPotHeaders x where
+    getPotHeaders :: x -> [PotHeader]
+    setPotHeaders :: x -> [PotHeader] -> x
+data PotHeader = PotHeader PotHeaderName String deriving (Eq)
 instance Show PotHeader where
     show (PotHeader a x)  = show a ++ ":" ++ x ++ ";"
-data PotHeaderName = SAFE | ACCEPT
+instance HasPotHeaders PotRequest where
+    getPotHeaders = prqHeaders
+    setPotHeaders prq phdrs = prq { prqHeaders=phdrs }
+data PotHeaderName = SAFE | ACCEPT deriving (Eq)
 instance Show PotHeaderName where
     show x =
         case x of
           SAFE -> "Safe"
           ACCEPT -> "Accept-Additions"
+mkPotHeader :: PotHeaderName -> String -> PotHeader
+mkPotHeader = PotHeader
+
+retPotHeaders :: HasPotHeaders a => a -> [PotHeader]
+retPotHeaders = getPotHeaders
 
 data PotErrorResponse = NA | TPOT
 instance Show PotErrorResponse where
