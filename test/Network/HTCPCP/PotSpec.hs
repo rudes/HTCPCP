@@ -5,21 +5,31 @@ import Network.HTCPCP.Pot
 
 spec :: Spec
 spec = do
-    let defPotURI = PotURI { potUriScheme = "coffee"
-                           , potUriHost = "host"
-                           , potDesignator = 2
-                           , potAdditions = MILK WHOLEMILK }
-    let defPotReq =  PotRequest { prqURI = defPotURI
-                                , prqMethod = GET
-                                , prqHeaders = [PotHeader SAFE "yes"
-                                               , PotHeader ACCEPT "WHOLE-MILK"]
-                                , prqBody = "test" }
+    let defPotURI = PotURI {
+        potUriScheme = "coffee"
+        , potUriHost = "host"
+        , potDesignator = 2
+        , potAdditions = MILK WHOLEMILK }
+    let defPotReq =  PotRequest {
+        prqURI = defPotURI
+        , prqMethod = GET
+        , prqHeaders =
+            [PotHeader SAFE "yes"
+            , PotHeader ACCEPT "WHOLE-MILK"]
+        , prqBody = "test" }
+    describe "retPotHeaders" $ it "gets all Coffee Headers from x" $
+        retPotHeaders defPotReq `shouldBe` ([PotHeader SAFE "yes"
+          , PotHeader ACCEPT "WHOLE-MILK"] :: [PotHeader])
+    describe "mkPotHeader" $ it "builds a Coffee Header" $
+        show (mkPotHeader SAFE "yes")
+        `shouldBe` ("Safe:yes;" :: String)
     describe "PotURI" $ it "builds a Coffee URI" $
         show defPotURI
         `shouldBe` ("coffee://host/pot-2#WHOLE-MILK" :: String)
     describe "PotRequest" $ it "builds a Coffee Request" $
         show defPotReq `shouldBe`
-        ("GET coffee://host/pot-2#WHOLE-MILK \r\nSafe:yes;Accept-Additions:WHOLE-MILK;\r\ntest" :: String)
+        ("GET coffee://host/pot-2#WHOLE-MILK \r\n\
+            \Safe:yes;Accept-Additions:WHOLE-MILK;\r\ntest" :: String)
     describe "PotRequestMethod" $ it "test Requests Methods" $ do
         show BREW `shouldBe` ("BREW" :: String)
         show GET `shouldBe` ("GET" :: String)
