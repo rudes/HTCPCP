@@ -112,6 +112,11 @@ insPotHeader name val x = setPotHeaders x newHeader
 insPotHeaders :: HasPotHeaders a => [PotHeader] -> a -> a
 insPotHeaders hdrs x = setPotHeaders x (getPotHeaders x ++ hdrs)
 
+replacePotHeader :: HasPotHeaders a => PotHeaderSetter a
+replacePotHeader name val h = setPotHeaders h newHead
+    where newHead = PotHeader name val : [ x | x@(PotHeader n _) <-
+              getPotHeaders h, name /= n]
+
 data PotErrorResponse = NA | TPOT
 instance Show PotErrorResponse where
     show x =

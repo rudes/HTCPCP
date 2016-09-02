@@ -17,6 +17,16 @@ spec = do
             [PotHeader SAFE "yes"
             , PotHeader ACCEPT "WHOLE-MILK"]
         , prqBody = "test" }
+    describe "replacePotHeader" $
+        it "replaces header in the headers" $
+            replacePotHeader ACCEPT "SKIM" defPotReq
+                `shouldBe` (PotRequest {
+                prqURI = defPotURI
+                , prqMethod = GET
+                , prqHeaders =
+                    [PotHeader ACCEPT "SKIM"
+                    , PotHeader SAFE "yes"]
+                , prqBody = "test" } :: PotRequest)
     describe "insPotHeaders" $
         it "appends headers to the head of the headers" $
             insPotHeaders [PotHeader SAFE "no"
