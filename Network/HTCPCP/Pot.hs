@@ -4,13 +4,18 @@ data PotRequest = PotRequest
     { prqURI :: PotURI
     , prqMethod :: PotRequestMethod
     , prqHeaders :: [PotHeader]
-    , prqBody :: String }
+    , prqBody :: String } deriving (Eq)
 instance Show PotRequest where
     show (PotRequest u m h b) =
         show m ++ " " ++ show u ++ " " ++ "\r\n"
         ++ concatMap show h ++ "\r\n" ++ b
 
-data PotRequestMethod = BREW | GET | PROPFIND | WHEN | Custom String
+data PotRequestMethod = BREW
+                      | GET
+                      | PROPFIND
+                      | WHEN
+                      | Custom String
+                      deriving (Eq)
 instance Show PotRequestMethod where
     show x =
         case x of
@@ -23,7 +28,7 @@ data PotURI = PotURI
     { potUriScheme :: String
     , potUriHost :: String
     , potDesignator :: Int
-    , potAdditions :: PotAddType }
+      , potAdditions :: PotAddType } deriving (Eq)
 instance Show PotURI where
     show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
                             ++ show d ++ "#" ++ show a
@@ -32,6 +37,7 @@ data PotAddType = MILK PotMilk
                 | SYRUP PotSyrup
                 | ALCOHOL PotAlcohol
                 | CustomAddition String
+                deriving (Eq)
 
 instance Show PotAddType where
     show x =
@@ -41,7 +47,13 @@ instance Show PotAddType where
           ALCOHOL a -> show a
           CustomAddition s -> s
 
-data PotMilk = CREAM | HALFANDHALF | WHOLEMILK | PARTSKIM | SKIM | NONDAIRY
+data PotMilk = CREAM
+      | HALFANDHALF
+      | WHOLEMILK
+      | PARTSKIM
+      | SKIM
+      | NONDAIRY
+      deriving (Eq)
 instance Show PotMilk where
     show x =
         case x of
@@ -52,7 +64,7 @@ instance Show PotMilk where
           SKIM -> "SKIM"
           NONDAIRY -> "NON-DAIRY"
 
-data PotSyrup = VANILLA | ALMOND | RASPBERRY | CHOCOLATE
+data PotSyrup = VANILLA | ALMOND | RASPBERRY | CHOCOLATE deriving (Eq)
 instance Show PotSyrup where
     show x =
         case x of
@@ -61,7 +73,7 @@ instance Show PotSyrup where
           RASPBERRY -> "RASPBERRY"
           CHOCOLATE -> "CHOCOLATE"
 
-data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT
+data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT deriving (Eq)
 instance Show PotAlcohol where
     show x =
         case x of
@@ -85,11 +97,20 @@ instance Show PotHeaderName where
         case x of
           SAFE -> "Safe"
           ACCEPT -> "Accept-Additions"
+
+type PotHeaderSetter a = PotHeaderName -> String -> a -> a
 mkPotHeader :: PotHeaderName -> String -> PotHeader
 mkPotHeader = PotHeader
 
 retPotHeaders :: HasPotHeaders a => a -> [PotHeader]
 retPotHeaders = getPotHeaders
+
+insPotHeader :: HasPotHeaders a => PotHeaderSetter a
+insPotHeader name val x = setPotHeaders x newHeader
+    where newHeader = PotHeader name val : getPotHeaders x
+
+insPotHeaders :: HasPotHeaders a => [PotHeader] -> a -> a
+insPotHeaders hdrs x = setPotHeaders x (getPotHeaders x ++ hdrs)
 
 data PotErrorResponse = NA | TPOT
 instance Show PotErrorResponse where

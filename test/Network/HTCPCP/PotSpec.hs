@@ -17,6 +17,29 @@ spec = do
             [PotHeader SAFE "yes"
             , PotHeader ACCEPT "WHOLE-MILK"]
         , prqBody = "test" }
+    describe "insPotHeaders" $
+        it "appends headers to the head of the headers" $
+            insPotHeaders [PotHeader SAFE "no"
+                          , PotHeader ACCEPT "SKIM"] defPotReq
+                `shouldBe` (PotRequest {
+                prqURI = defPotURI
+                , prqMethod = GET
+                , prqHeaders =
+                    [PotHeader SAFE "yes"
+                    , PotHeader ACCEPT "WHOLE-MILK"
+                    , PotHeader SAFE "no"
+                    , PotHeader ACCEPT "SKIM"]
+                , prqBody = "test" } :: PotRequest)
+    describe "insPotHeader" $ it "appends header to the head of the headers" $
+        insPotHeader SAFE "no" defPotReq
+        `shouldBe` (PotRequest {
+        prqURI = defPotURI
+        , prqMethod = GET
+        , prqHeaders =
+            [PotHeader SAFE "no"
+            , PotHeader SAFE "yes"
+            , PotHeader ACCEPT "WHOLE-MILK"]
+        , prqBody = "test" } :: PotRequest)
     describe "retPotHeaders" $ it "gets all Coffee Headers from x" $
         retPotHeaders defPotReq `shouldBe` ([PotHeader SAFE "yes"
           , PotHeader ACCEPT "WHOLE-MILK"] :: [PotHeader])
