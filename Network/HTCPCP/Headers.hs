@@ -10,7 +10,7 @@ module Network.HTCPCP.Headers where
 --
 --
 -- Accept-Additions = "Accept-Additons" ":" [addition-type]
--- addition-type = milk-type | syrup-type | sweetener-type 
+-- addition-type = milk-type | syrup-type | sweetener-type
 --              | alcohol-type | "*"
 --              (semi-colon seperated list)
 -- milk-type = "Cream" | "Half-and-half" | "Whole-milk"
@@ -23,43 +23,23 @@ module Network.HTCPCP.Headers where
 --                  (Post and Brew require this header)
 -------------------------------------------
 
-import Network.HTCPCP.Methods
+class HasPotHeaders x where
+    getPotHeaders :: x -> [PotHeader]
+    setPotHeaders :: x -> [PotHeader] -> x
 
-data PotURI = PotURI
-    { potUriScheme :: String
-    , potUriHost :: String
-    , potDesignator :: Int
-      , potAdditions :: PotAddType } deriving (Eq)
-instance Show PotURI where
-    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
-                            ++ show d ++ "#" ++ show a
+data PotHeader = PotHeader PotHeaderName String deriving (Eq)
 
-
-data PotRequest = PotRequest
-    { prqURI :: PotURI
-    , prqMethod :: PotRequestMethod
-    , prqHeaders :: [PotHeader]
-    , prqBody :: String } deriving (Eq)
-instance Show PotRequest where
-    show (PotRequest u m h b) =
-        show m ++ " " ++ show u ++ " " ++ "\r\n"
-        ++ concatMap show h ++ "\r\n" ++ b
 data PotAddType = MILK PotMilk
                 | SYRUP PotSyrup
                 | ALCOHOL PotAlcohol
                 | CustomAddition String
                 deriving (Eq)
 
-class HasPotHeaders x where
-    getPotHeaders :: x -> [PotHeader]
-    setPotHeaders :: x -> [PotHeader] -> x
-data PotHeader = PotHeader PotHeaderName String deriving (Eq)
 instance Show PotHeader where
     show (PotHeader a x)  = show a ++ ":" ++ x ++ ";"
-instance HasPotHeaders PotRequest where
-    getPotHeaders = prqHeaders
-    setPotHeaders prq phdrs = prq { prqHeaders=phdrs }
+
 data PotHeaderName = SAFE | ACCEPT deriving (Eq)
+
 instance Show PotHeaderName where
     show x =
         case x of
@@ -67,6 +47,7 @@ instance Show PotHeaderName where
           ACCEPT -> "Accept-Additions"
 
 type PotHeaderSetter a = PotHeaderName -> String -> a -> a
+
 mkPotHeader :: PotHeaderName -> String -> PotHeader
 mkPotHeader = PotHeader
 
@@ -100,6 +81,7 @@ data PotMilk = CREAM
       | SKIM
       | NONDAIRY
       deriving (Eq)
+
 instance Show PotMilk where
     show x =
         case x of
@@ -111,6 +93,7 @@ instance Show PotMilk where
           NONDAIRY -> "NON-DAIRY"
 
 data PotSyrup = VANILLA | ALMOND | RASPBERRY | CHOCOLATE deriving (Eq)
+
 instance Show PotSyrup where
     show x =
         case x of
@@ -120,6 +103,7 @@ instance Show PotSyrup where
           CHOCOLATE -> "CHOCOLATE"
 
 data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT deriving (Eq)
+
 instance Show PotAlcohol where
     show x =
         case x of
