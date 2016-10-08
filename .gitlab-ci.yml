@@ -2,6 +2,8 @@ image: haskell:latest
 
 before_script:
     - cabal update
+    - cabal install hspec
+    - cabal install base
 
 test:
     script:
