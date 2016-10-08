@@ -1,5 +1,9 @@
 module Network.HTCPCP.Request where
 
+import Network.HTCPCP.Headers
+import Network.HTCPCP.Methods
+import Network.HTCPCP.URI
+
 data PotRequest = PotRequest
     { prqURI :: PotURI
     , prqMethod :: PotRequestMethod

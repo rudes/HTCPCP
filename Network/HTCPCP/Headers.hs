@@ -1,5 +1,7 @@
 module Network.HTCPCP.Headers where
 
+import Network.HTCPCP.Request
+
 -------------------------------------------
 -- From rfc2324:
 --

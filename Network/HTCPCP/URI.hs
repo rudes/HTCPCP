@@ -1,5 +1,7 @@
 module Network.HTCPCP.URI where
 
+import Network.HTCPCP.Headers
+
 data PotURI = PotURI
     { potUriScheme :: String
     , potUriHost :: String
