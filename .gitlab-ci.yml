@@ -1,0 +1,10 @@
+image: haskell:latest
+
+before_script:
+    - cabal update
+
+test:
+    script:
+        - cabal configure --only-dependencies --enable-tests
+        - cabal build
+        - cabal test
