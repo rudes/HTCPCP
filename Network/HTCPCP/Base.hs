@@ -1,5 +1,18 @@
 module Network.HTCPCP.Base where
 
+-------------------------------------------
+-- URI | Methods from rfc2324:
+--
+-- Methods = BREW | POST | GET | PROPFIND | WHEN
+--
+-- URI:
+-- coffee-url = coffee-scheme ":" [ "//" host ]
+--              [ "/" pot-designator ] [ "?" additions-list ]
+-- coffee-scheme = "koffie" | "coffee" | "kafo" ....
+-- pot-designator = "pot-" int
+-- additions-list = [ addition ]
+-------------------------------------------
+
 import Network.HTCPCP.Headers
 
 data PotRequestMethod = BREW
@@ -36,7 +49,8 @@ data PotURI = PotURI
     { potUriScheme :: String
     , potUriHost :: String
     , potDesignator :: Int
-      , potAdditions :: PotAddType } deriving (Eq)
+    , potAdditions :: PotAddType } deriving (Eq)
+
 instance Show PotURI where
     show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
                             ++ show d ++ "#" ++ show a

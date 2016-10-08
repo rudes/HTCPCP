@@ -1,14 +1,12 @@
 module Network.HTCPCP.Headers where
 
 -------------------------------------------
--- From rfc2324:
+-- Headers From rfc2324:
 --
 -- Safe  = "Safe" ":" safe-nature
 -- safe-nature = "yes" | "no" | conditionally-safe
 -- conditionally-safe = "if-" safe-condition
 -- safe-condition = "user-awake" | token
---
---
 -- Accept-Additions = "Accept-Additons" ":" [addition-type]
 -- addition-type = milk-type | syrup-type | sweetener-type
 --              | alcohol-type | "*"
