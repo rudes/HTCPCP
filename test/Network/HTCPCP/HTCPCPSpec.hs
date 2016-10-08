@@ -63,30 +63,23 @@ spec = do
         `shouldBe` ("Safe:yes;" :: String)
 
     -- Types
-    describe "PotURI" $ it "builds a Coffee URI" $ do
+    describe "PotURI" $ it "builds a Coffee URI" $
         show defPotURI
-            `shouldBe` ("coffee://host/pot-2#WHOLE-MILK" :: String)
-        defPotURI `shouldBe` defPotURI
-    describe "PotRequest" $ it "builds a Coffee Request" $ do
+        `shouldBe` ("coffee://host/pot-2#WHOLE-MILK" :: String)
+    describe "PotRequest" $ it "builds a Coffee Request" $
         show defPotReq `shouldBe`
-            ("GET coffee://host/pot-2#WHOLE-MILK \r\n\
-                \Safe:yes;Accept-Additions:WHOLE-MILK;\r\ntest" :: String)
-        defPotReq `shouldBe` defPotReq
+        ("GET coffee://host/pot-2#WHOLE-MILK \r\n\
+            \Safe:yes;Accept-Additions:WHOLE-MILK;\r\ntest" :: String)
     describe "PotRequestMethod" $ it "test Requests Methods" $ do
         show BREW `shouldBe` ("BREW" :: String)
         show GET `shouldBe` ("GET" :: String)
         show PROPFIND `shouldBe` ("PROPFIND" :: String)
         show WHEN `shouldBe` ("WHEN" :: String)
-        BREW `shouldBe` BREW
-        GET `shouldBe` GET
-        PROPFIND `shouldBe` PROPFIND
-        WHEN `shouldBe` WHEN
     describe "PotAddType" $ it "test Addition Types" $ do
         show (MILK WHOLEMILK) `shouldBe` ("WHOLE-MILK" :: String)
         show (SYRUP VANILLA) `shouldBe` ("VANILLA" :: String)
         show (ALCOHOL WHISKY) `shouldBe` ("WHISKY" :: String)
         show (CustomAddition "SUGAR") `shouldBe` ("SUGAR" :: String)
-        CustomAddition "SUGAR" `shouldBe` CustomAddition "SUGAR"
     describe "PotMilk" $ it "test Milk Types" $ do
         show CREAM `shouldBe` ("CREAM" :: String)
         show HALFANDHALF `shouldBe` ("HALF-AND-HALF" :: String)
@@ -94,33 +87,16 @@ spec = do
         show PARTSKIM `shouldBe` ("PART-SKIM" :: String)
         show SKIM `shouldBe` ("SKIM" :: String)
         show NONDAIRY `shouldBe` ("NON-DAIRY" :: String)
-        CREAM `shouldBe` CREAM
-        WHOLEMILK `shouldBe` WHOLEMILK
-        PARTSKIM `shouldBe` PARTSKIM
-        SKIM `shouldBe` SKIM
-        NONDAIRY `shouldBe` NONDAIRY
-        HALFANDHALF `shouldBe` HALFANDHALF
     describe "PotSyrup" $ it "test Syrup Types" $ do
         show VANILLA `shouldBe` ("VANILLA" :: String)
         show ALMOND `shouldBe` ("ALMOND" :: String)
         show RASPBERRY `shouldBe` ("RASPBERRY" :: String)
         show CHOCOLATE `shouldBe` ("CHOCOLATE" :: String)
-        VANILLA `shouldBe` VANILLA
-        ALMOND `shouldBe` ALMOND
-        RASPBERRY `shouldBe` RASPBERRY
-        CHOCOLATE `shouldBe` CHOCOLATE
     describe "PotAlcohol" $ it "test Alcohol Types" $ do
         show WHISKY `shouldBe` ("WHISKY" :: String)
         show RUM `shouldBe` ("RUM" :: String)
         show KAHLUA `shouldBe` ("KAHLUA" :: String)
         show AQUAVIT `shouldBe` ("AQUAVIT" :: String)
-        WHISKY `shouldBe` WHISKY
-        RUM `shouldBe` RUM
-        KAHLUA `shouldBe` KAHLUA
-        AQUAVIT `shouldBe` AQUAVIT
     describe "PotErrorResponse" $ it "builds a Coffee Error Response" $ do
         show NA `shouldBe` ("406 Not Acceptable" :: String)
         show TPOT `shouldBe` ("418 I'm a Teapot" :: String)
-    describe "PotHeaders" $ it "tests Pot Headers Eq" $ do
-        PotHeader SAFE "test" `shouldBe` PotHeader SAFE "test"
-        PotHeader ACCEPT "test" `shouldBe` PotHeader ACCEPT "test"
