@@ -13,8 +13,6 @@ cabal-version:       >=1.24
 library
   hs-source-dirs: .
   exposed-modules: 
-    Network.HTCPCP.Request,
-    Network.HTCPCP.URI,
     Network.HTCPCP.Headers,
     Network.HTCPCP.Methods,
     Network.HTCPCP.Returns

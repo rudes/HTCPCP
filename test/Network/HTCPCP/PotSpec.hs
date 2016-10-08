@@ -2,10 +2,8 @@ module Network.HTCPCP.PotSpec where
 
 import Test.Hspec
 import Network.HTCPCP.Methods
-import Network.HTCPCP.Requests
 import Network.HTCPCP.Returns
 import Network.HTCPCP.Headers
-import Network.HTCPCP.URI
 
 spec :: Spec
 spec = do

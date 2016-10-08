@@ -1,7 +1,5 @@
 module Network.HTCPCP.Headers where
 
-import Network.HTCPCP.Request
-
 -------------------------------------------
 -- From rfc2324:
 --
@@ -25,6 +23,27 @@ import Network.HTCPCP.Request
 --                  (Post and Brew require this header)
 -------------------------------------------
 
+import Network.HTCPCP.Methods
+
+data PotURI = PotURI
+    { potUriScheme :: String
+    , potUriHost :: String
+    , potDesignator :: Int
+      , potAdditions :: PotAddType } deriving (Eq)
+instance Show PotURI where
+    show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
+                            ++ show d ++ "#" ++ show a
+
+
+data PotRequest = PotRequest
+    { prqURI :: PotURI
+    , prqMethod :: PotRequestMethod
+    , prqHeaders :: [PotHeader]
+    , prqBody :: String } deriving (Eq)
+instance Show PotRequest where
+    show (PotRequest u m h b) =
+        show m ++ " " ++ show u ++ " " ++ "\r\n"
+        ++ concatMap show h ++ "\r\n" ++ b
 data PotAddType = MILK PotMilk
                 | SYRUP PotSyrup
                 | ALCOHOL PotAlcohol
