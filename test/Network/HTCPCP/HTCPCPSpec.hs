@@ -101,7 +101,7 @@ spec = do
         show KAHLUA `shouldBe` ("KAHLUA" :: String)
         show AQUAVIT `shouldBe` ("AQUAVIT" :: String)
     describe "PotContent" $ it "test Content type" $
-        show POT `shuoldBe` ("message/coffeepot" :: String)
+        show POT `shouldBe` ("message/coffeepot" :: String)
     describe "PotErrorResponse" $ it "builds a Coffee Error Response" $ do
         show NA `shouldBe` ("406 Not Acceptable" :: String)
         show TPOT `shouldBe` ("418 I'm a Teapot" :: String)
