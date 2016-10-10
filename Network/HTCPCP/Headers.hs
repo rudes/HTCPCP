@@ -21,17 +21,8 @@ module Network.HTCPCP.Headers where
 --                  (Post and Brew require this header)
 -------------------------------------------
 
-class HasPotHeaders x where
-    getPotHeaders :: x -> [PotHeader]
-    setPotHeaders :: x -> [PotHeader] -> x
 
 data PotHeader = PotHeader PotHeaderName String deriving (Eq)
-
-data PotAddType = MILK PotMilk
-                | SYRUP PotSyrup
-                | ALCOHOL PotAlcohol
-                | CustomAddition String
-                deriving (Eq)
 
 instance Show PotHeader where
     show (PotHeader a x)  = show a ++ ":" ++ x ++ ";"
@@ -44,25 +35,11 @@ instance Show PotHeaderName where
           SAFE -> "Safe"
           ACCEPT -> "Accept-Additions"
 
-type PotHeaderSetter a = PotHeaderName -> String -> a -> a
-
-mkPotHeader :: PotHeaderName -> String -> PotHeader
-mkPotHeader = PotHeader
-
-retPotHeaders :: HasPotHeaders a => a -> [PotHeader]
-retPotHeaders = getPotHeaders
-
-insPotHeader :: HasPotHeaders a => PotHeaderSetter a
-insPotHeader name val x = setPotHeaders x newHeader
-    where newHeader = PotHeader name val : getPotHeaders x
-
-insPotHeaders :: HasPotHeaders a => [PotHeader] -> a -> a
-insPotHeaders hdrs x = setPotHeaders x (getPotHeaders x ++ hdrs)
-
-replacePotHeader :: HasPotHeaders a => PotHeaderSetter a
-replacePotHeader name val h = setPotHeaders h newHead
-    where newHead = PotHeader name val : [ x | x@(PotHeader n _) <-
-              getPotHeaders h, name /= n]
+data PotAddType = MILK PotMilk
+                | SYRUP PotSyrup
+                | ALCOHOL PotAlcohol
+                | CustomAddition String
+                deriving (Eq)
 
 instance Show PotAddType where
     show x =
@@ -100,6 +77,14 @@ instance Show PotSyrup where
           RASPBERRY -> "RASPBERRY"
           CHOCOLATE -> "CHOCOLATE"
 
+data PotSweetener = SUGAR | HONEY deriving (Eq)
+
+instance Show PotSweetener where
+    show x = 
+        case x of
+          SUGAR -> "Sugar"
+          HONEY -> "Honey"
+
 data PotAlcohol = WHISKY | RUM | KAHLUA | AQUAVIT deriving (Eq)
 
 instance Show PotAlcohol where
@@ -110,3 +95,33 @@ instance Show PotAlcohol where
           KAHLUA -> "KAHLUA"
           AQUAVIT -> "AQUAVIT"
 
+data PotContent = POT deriving (Eq)
+
+instance Show PotContent where
+    show x =
+        case x of
+          POT -> "message/coffeepot"
+
+class HasPotHeaders x where
+    getPotHeaders :: x -> [PotHeader]
+    setPotHeaders :: x -> [PotHeader] -> x
+
+type PotHeaderSetter a = PotHeaderName -> String -> a -> a
+
+mkPotHeader :: PotHeaderName -> String -> PotHeader
+mkPotHeader = PotHeader
+
+retPotHeaders :: HasPotHeaders a => a -> [PotHeader]
+retPotHeaders = getPotHeaders
+
+insPotHeader :: HasPotHeaders a => PotHeaderSetter a
+insPotHeader name val x = setPotHeaders x newHeader
+    where newHeader = PotHeader name val : getPotHeaders x
+
+insPotHeaders :: HasPotHeaders a => [PotHeader] -> a -> a
+insPotHeaders hdrs x = setPotHeaders x (getPotHeaders x ++ hdrs)
+
+replacePotHeader :: HasPotHeaders a => PotHeaderSetter a
+replacePotHeader name val h = setPotHeaders h newHead
+    where newHead = PotHeader name val : [ x | x@(PotHeader n _) <-
+              getPotHeaders h, name /= n]

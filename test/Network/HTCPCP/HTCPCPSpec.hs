@@ -92,11 +92,16 @@ spec = do
         show ALMOND `shouldBe` ("ALMOND" :: String)
         show RASPBERRY `shouldBe` ("RASPBERRY" :: String)
         show CHOCOLATE `shouldBe` ("CHOCOLATE" :: String)
+    describe "PotSweetener" $ it "test Swettener Types" $ do
+        show SUGAR `shouldBe` ("Sugar" :: String)
+        show HONEY `shouldBe` ("Honey" :: String)
     describe "PotAlcohol" $ it "test Alcohol Types" $ do
         show WHISKY `shouldBe` ("WHISKY" :: String)
         show RUM `shouldBe` ("RUM" :: String)
         show KAHLUA `shouldBe` ("KAHLUA" :: String)
         show AQUAVIT `shouldBe` ("AQUAVIT" :: String)
+    describe "PotContent" $ it "test Content type" $
+        show POT `shuoldBe` ("message/coffeepot" :: String)
     describe "PotErrorResponse" $ it "builds a Coffee Error Response" $ do
         show NA `shouldBe` ("406 Not Acceptable" :: String)
         show TPOT `shouldBe` ("418 I'm a Teapot" :: String)

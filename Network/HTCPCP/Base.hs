@@ -30,10 +30,6 @@ instance Show PotRequestMethod where
             PROPFIND   ->   "PROPFIND"
             WHEN       ->   "WHEN"
 
-instance HasPotHeaders PotRequest where
-    getPotHeaders = prqHeaders
-    setPotHeaders prq phdrs = prq { prqHeaders=phdrs }
-
 data PotRequest = PotRequest
     { prqURI :: PotURI
     , prqMethod :: PotRequestMethod
@@ -54,3 +50,7 @@ data PotURI = PotURI
 instance Show PotURI where
     show (PotURI s h d a) = s ++ "://" ++ h ++ "/pot-"
                             ++ show d ++ "#" ++ show a
+
+instance HasPotHeaders PotRequest where
+    getPotHeaders = prqHeaders
+    setPotHeaders prq phdrs = prq { prqHeaders=phdrs }
